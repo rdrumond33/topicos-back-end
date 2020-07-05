@@ -1,6 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
-
+using Projeto.DAO;
 
 namespace Projeto.Model
 {
@@ -19,6 +19,8 @@ namespace Projeto.Model
         [Column(name: "User")]
         public string User { set; get; }
 
-
+        [IncludeAttribute]
+        [ForeignKey("Id_pessoa")]
+        public virtual Pessoa Pessoa { get; set; }
     }
 }
