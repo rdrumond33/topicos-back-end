@@ -1,9 +1,16 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Projeto.Model;
 using Projeto.VO;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Projeto.Model;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Projeto.DAO
 {
@@ -27,6 +34,7 @@ namespace Projeto.DAO
             _mapper = new Mapper(config);
         }
 
+        
         //Este método recebe qualquer objeto que tenha herdado de BaseVO
         //Isto está sendo sinalizado por : where VO : BaseVO, new()
         public virtual void Save(VO vo)
@@ -41,15 +49,15 @@ namespace Projeto.DAO
                 */
                 using (TContext context = new TContext())
                 {
-                   /*
-                    * Como o mapeamento junto ao banco é feito pelo model
-                      e os dados transitam no sistema por VO, é  necessário 
-                      fazer a transformação. 
-                      
-                      AutoMapper é um recurso que permite mapear um objeto em
-                      outro. Da forma que estamos utilizando ele mapeia atributos
-                      de mesmo nome. 
-                    */
+                    /*
+                     * Como o mapeamento junto ao banco é feito pelo model
+                       e os dados transitam no sistema por VO, é  necessário 
+                       fazer a transformação. 
+
+                       AutoMapper é um recurso que permite mapear um objeto em
+                       outro. Da forma que estamos utilizando ele mapeia atributos
+                       de mesmo nome. 
+                     */
                     entity = _mapper.Map<VO, Entity>(vo, entity);
 
                     /*
@@ -59,7 +67,7 @@ namespace Projeto.DAO
                      * for chamado.
                      * Você pode utilizar a linha 60 e/ou 61 para fazer este tipo de sinalização.
                     */
-                    context.Set<Entity>().Add(entity);  
+                    context.Set<Entity>().Add(entity);
                     context.Entry(entity).State = EntityState.Added;
 
                     //faz as alterações no banco de dados
@@ -74,7 +82,7 @@ namespace Projeto.DAO
         }
 
         //Para pagar uma tupla no banco de dados é necessário passar um ID
-        public virtual bool Delete(long id)
+        public virtual bool Delete(int id)
         {
             try
             {
@@ -115,8 +123,8 @@ namespace Projeto.DAO
          * Diferente do método Select, que pode paginar o resultado e pode fazer um filtro por diferentes
          * atributos, este recebe apenas uma chave primária (ID) de parâmetro e verifica se existe para 
          * o contexto/entidade em questão. 
-        */  
-        public virtual VO SelectOne(long id)
+        */
+        public virtual VO SelectOne(int id)
         {
             Entity entity;
             using (TContext context = new TContext())
@@ -148,12 +156,12 @@ namespace Projeto.DAO
                  * pegaria as 100 primeiras tuplas a partir da 500.
                  */
                 dbQuery = dbQuery
-                    .Skip((currentPage - 1) * numberOfElements)
-                    .Take(itemPerPage);
+                                .Skip((currentPage - 1) * numberOfElements)
+                                .Take(itemPerPage)
+                                .LoadRelated<Entity>();
+                IEnumerable<Entity> filteredItems = dbQuery;
 
-                IEnumerable<Entity> filteredItems = dbQuery;                 
-
-                if(itemPerPage > 0)
+                if (itemPerPage > 0)
                 {
                     /*
                      * para cada elemento obtido na consulta, ele transforma o que será retornado (entity)
@@ -216,6 +224,6 @@ namespace Projeto.DAO
         {
             return query;
         }
-        
+
     }
 }
