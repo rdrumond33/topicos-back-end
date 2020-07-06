@@ -12,7 +12,7 @@ namespace Projeto.DAO
 {
     public class IncludeAttribute : Attribute
     {}
-    public static class BaseIncludeDAO
+    public static class Include 
     {
 
         public static IQueryable<T> LoadRelated<T>(this IQueryable<T> originalQuery) where T : BaseEntity, new()
