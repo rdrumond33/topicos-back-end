@@ -17,6 +17,7 @@ namespace Projeto.Model
         {
 
         }
+        public virtual DbSet<Anotacao> Anotacao { get; set; }
 
         public virtual DbSet<Pessoa> Pessoa { get; set; }
 
@@ -39,7 +40,7 @@ namespace Projeto.Model
             if (!optionsBuilder.IsConfigured)
             {
                 //o correto é colocar isso no arquivo de configuração
-                optionsBuilder.UseMySql("server=localhost;database=rodrigo;user=root;password=");
+                optionsBuilder.UseMySql("server=localhost;database=rodrigo;user=root;password=root");
             }
         }
 

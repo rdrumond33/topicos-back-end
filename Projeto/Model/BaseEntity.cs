@@ -8,6 +8,6 @@ namespace Projeto.Model
     {
         [Key]
         [Column(name: "ID")]
-        public virtual long Id { get; set; }
+        public virtual int Id { get; set; }
     }
 }

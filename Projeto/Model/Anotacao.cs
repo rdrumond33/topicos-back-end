@@ -1,6 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
-
+using Projeto.DAO;
 namespace Projeto.Model
 {
     [Table("anotacao")]
@@ -17,5 +17,13 @@ namespace Projeto.Model
 
         [Column(name: "Id_pessoa")]
         public int Id_pessoa { set; get; }
+
+        [Include]
+        [ForeignKey("Id_grupo")]
+        public virtual Grupo Grupo { get; set; }
+        [Include]
+        [ForeignKey("Id_pessoa")]
+        public virtual Pessoa Pessoa { get; set; }
+
     }
 }

@@ -11,6 +11,10 @@ namespace Projeto.Model
     {
         public AutoMapperProfile()
         {
+             CreateMap<Anotacao, AnotacaoVO>()
+            .ReverseMap()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            
             CreateMap<Pessoa, PessoaVO>()
             .ReverseMap()
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));

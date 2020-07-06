@@ -18,9 +18,10 @@ namespace Projeto.Model
 
         [Column(name: "User")]
         public string User { set; get; }
-
-        [IncludeAttribute]
+        
+        [Include]
         [ForeignKey("Id_pessoa")]
         public virtual Pessoa Pessoa { get; set; }
+
     }
 }
